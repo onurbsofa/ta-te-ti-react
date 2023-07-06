@@ -4,6 +4,14 @@ const TURNS = {
 }
 
 const board = Array(9).fill(null)
+const Square = ({ children, updateBoard, index }) => {
+  return (
+    <div className="square">
+      {children}
+    </div>
+  )
+}
+
 
 function App() {
   return (
@@ -11,13 +19,11 @@ function App() {
         <h1>Ta Te Ti</h1>
         <section className="game">
         {
-          board.map(( value, index) => {
+          board.map(( index) => {
             return (
-            <div className="cell" key={index}>
-              <span className="cell__content">
-              {index}
-              </span>
-            </div>
+              <Square key={index} index={index}>
+                
+              </Square>
           )
         })
         }
