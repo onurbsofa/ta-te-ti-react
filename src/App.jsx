@@ -21,7 +21,9 @@ function App() {
         {
           board.map(( index) => {
             return (
-              <Square key={index} index={index}>
+              <Square 
+                key={index} 
+                index={index}>
                 
               </Square>
           )
