@@ -28,10 +28,13 @@ function App() {
 
   const updateBoard = (index) => {
     const newBoard = [...board]//srpead operator y rest operator
+    //
     newBoard[index] = turn
+    //
     setBoard(newBoard)
-
+    //
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
+    //
     setTurn(newTurn)
   }
   return (
