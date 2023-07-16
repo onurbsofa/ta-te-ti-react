@@ -20,6 +20,7 @@ const Square = ({ children, isSelected , updateBoard, index }) => {
   )
 }
 
+//Error(cada vez que se toca una celda se ponene todos los cuadrados)
 
 function App() {
   //estados
@@ -41,7 +42,7 @@ function App() {
     <main className="board">
         <h1>Ta Te Ti</h1>
         <section className="game">
-        {
+        {//creo que esta en uno de los parametros del map
           board.map(( index) => {
             return (
               <Square 
