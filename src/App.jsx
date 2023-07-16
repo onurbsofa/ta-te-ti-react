@@ -14,11 +14,14 @@ const Square = ({ children, isSelected , updateBoard, index }) => {
 
 
   return (
-    <div onClick={handlerClick} className= {className}>
+    <div onClick={handlerClick} 
+        className={className}
+        >
       {children}
     </div>
   )
 }
+
 
 //Error(cada vez que se toca una celda se ponene todos los cuadrados)
 
@@ -26,7 +29,7 @@ function App() {
   //estados
   const [board, setBoard] = useState(Array(9).fill(null))
   const [turn, setTurn] = useState(TURNS.X)
-
+1
   const updateBoard = (index) => {
     const newBoard = [...board]//srpead operator y rest operator
     //
@@ -43,14 +46,14 @@ function App() {
         <h1>Ta Te Ti</h1>
         <section className="game">
         {//creo que esta en uno de los parametros del map
-          board.map(( index) => {
+          board.map(( square, index) => {
             return (
               <Square 
                 key={index} 
                 index={index}
                 updateBoard={updateBoard}
                 >
-                {board[index]}
+                {square}
               </Square>
           )
         })
