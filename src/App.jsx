@@ -1,40 +1,9 @@
 import { useState } from "react"
-
-const TURNS = {
-  X: 'X',
-  O: 'O'
-}
-
-const Square = ({ children, isSelected , updateBoard, index }) => {
-  
-  const className = `square${isSelected ? ' is-selected' : ''}`
-  const handlerClick = () => {
-    updateBoard(index)
-  }
-
-  return (
-    <div onClick={handlerClick} 
-        className={className}
-        >
-      {children}
-    </div>
-  )
-}
-
-const WINNER_COMBINATIONS = [
-  //horizontales
-  [0,1,2],
-  [3,4,5],
-  [6,7,8],
-  //verticales
-  [0,3,6],
-  [1,4,7],
-  [2,5,8],
-  //diagonales
-  [0,4,8],
-  [2,4,6]
-]
-
+import confetti from "canvas-confetti"
+import {TURNS, WINNER_COMBINATIONS} from './constants.js'
+import {Square} from "./components/Square.jsx"
+import {checkWinnerFrom, checkEndGame} from "./utils/board.js"
+import {WinnerModal} from "./components/WinnerModal.jsx"
 
 
 function App() {
@@ -43,27 +12,14 @@ function App() {
   const [turn, setTurn] = useState(TURNS.X)
   const [winner, setWinner] = useState(null) //null es que no hay ganador y false es que hay empate
 
-  //funciones
-  const checkWinner = (boardToCheck) => {
-    //revisamos si todas las combinaciones de ganadorpara ver si x u o
-    for(const combo of WINNER_COMBINATIONS){
-      const [a,b,c] = combo
-      if(
-        boardToCheck[a] && // miró si existe algo
-        boardToCheck[a] === boardToCheck[b] && 
-        boardToCheck[a] === boardToCheck[c]){
-            return boardToCheck[a] //devuelve el ganador si todo se cumple
-          }
-    }
-    //si no hay ganador
-    return null
-  }
   //volvemo al estado incial del juego poniendo los estados como estaban esto es la magia de react
   const resetGame = () => {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
   }
+
+  
 
 
   const updateBoard = (index) => {
@@ -80,10 +36,13 @@ function App() {
     //
     setTurn(newTurn)
     //revisamos si hay ganador
-    const newWinner = checkWinner(newBoard)
+    const newWinner = checkWinnerFrom(newBoard)
     if(newWinner){
       setWinner(newWinner)
+      confetti()
      /*  alert(`Ganó ${newWinner}`) */ // esto se ejecutaria antes que el estado del tablero se actualice porque la actualizacion de los hooks son asincronos
+    }else if(checkEndGame(newBoard)){
+      setWinner(false)
     }
 
   }
@@ -119,28 +78,9 @@ function App() {
 
         </section>
 
-        {
-          winner !== null && (
-            <section className="winner">
-              <div className="text">
-                <h2>
-                  {
-                    winner === false ? 'Empate' : `Ganó `
-                  }
-                </h2>
-
-                <header className="win">
-                  {winner && <Square>{winner}</Square>}
-                </header>
-
-                <footer>
-                  <button onClick={resetGame}>empezar de nuevo</button>
-                </footer>
-
-              </div>
-            </section>
-          )
-        }
+      <WinnerModal 
+      resetGame={resetGame} 
+      winner={winner}/>
 
 
     </main>
