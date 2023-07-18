@@ -77,6 +77,7 @@ function App() {
     const newWinner = checkWinner(newBoard)
     if(newWinner){
       setWinner(newWinner)
+     /*  alert(`Ganó ${newWinner}`) */ // esto se ejecutaria antes que el estado del tablero se actualice porque la actualizacion de los hooks son asincronos
     }
 
   }
