@@ -4,6 +4,7 @@ import {TURNS, WINNER_COMBINATIONS} from './constants.js'
 import {Square} from "./components/Square.jsx"
 import {checkWinnerFrom, checkEndGame} from "./utils/board.js"
 import {WinnerModal} from "./components/WinnerModal.jsx"
+import { saveGameToStorage, resetGameStorage } from "./utils/storage/index.js"
 
 
 function App() {
@@ -13,7 +14,10 @@ function App() {
     const boardForStorage = window.localStorage.getItem('board')
     return boardForStorage ? JSON.parse(boardForStorage) : Array(9).fill(null)
   }) 
-  const [turn, setTurn] = useState(TURNS.X)
+  const [turn, setTurn] = useState(() => {
+    const turnForStorage = window.localStorage.getItem('turn')
+    return turnForStorage ?? TURNS.X
+  })
   const [winner, setWinner] = useState(null) //null es que no hay ganador y false es que hay empate
 
   //volvemo al estado incial del juego poniendo los estados como estaban esto es la magia de react
@@ -21,6 +25,8 @@ function App() {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
+    resetGameStorage()
+
   }
  
 
@@ -37,9 +43,12 @@ function App() {
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     //
     setTurn(newTurn)
-    //guardamos el estado del tablero
-    window.localStorage.setItem('board', JSON.stringify(newBoard))
-    window.localStorage.setItem('turn', turn)
+    //guardamos el juego en el local storage
+    saveGameToStorage({
+      board: newBoard,
+      turn: newTurn
+    })
+
     //revisamos si hay ganador
     const newWinner = checkWinnerFrom(newBoard)
     if(newWinner){
