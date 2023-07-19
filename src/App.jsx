@@ -7,8 +7,12 @@ import {WinnerModal} from "./components/WinnerModal.jsx"
 
 
 function App() {
+
   //estados
-  const [board, setBoard] = useState(Array(9).fill(null))
+  const [board, setBoard] = useState(()=>{
+    const boardForStorage = window.localStorage.getItem('board')
+    return boardForStorage ? JSON.parse(boardForStorage) : Array(9).fill(null)
+  }) 
   const [turn, setTurn] = useState(TURNS.X)
   const [winner, setWinner] = useState(null) //null es que no hay ganador y false es que hay empate
 
@@ -18,9 +22,7 @@ function App() {
     setTurn(TURNS.X)
     setWinner(null)
   }
-
-  
-
+ 
 
   const updateBoard = (index) => {
     // no actualuizamos esta posición si ya esta ocupada
@@ -35,6 +37,9 @@ function App() {
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     //
     setTurn(newTurn)
+    //guardamos el estado del tablero
+    window.localStorage.setItem('board', JSON.stringify(newBoard))
+    window.localStorage.setItem('turn', turn)
     //revisamos si hay ganador
     const newWinner = checkWinnerFrom(newBoard)
     if(newWinner){
