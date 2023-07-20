@@ -14,6 +14,7 @@ function App() {
     const boardForStorage = window.localStorage.getItem('board')
     return boardForStorage ? JSON.parse(boardForStorage) : Array(9).fill(null)
   }) 
+  //guardamos el turno en el local storage
   const [turn, setTurn] = useState(() => {
     const turnForStorage = window.localStorage.getItem('turn')
     return turnForStorage ?? TURNS.X
@@ -25,6 +26,7 @@ function App() {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
+    //reseteamos el local storage
     resetGameStorage()
 
   }
