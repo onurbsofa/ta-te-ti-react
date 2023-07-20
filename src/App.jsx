@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import confetti from "canvas-confetti"
 import {TURNS, WINNER_COMBINATIONS} from './constants.js'
 import {Square} from "./components/Square.jsx"
@@ -30,6 +30,12 @@ function App() {
     resetGameStorage()
 
   }
+
+  //ejemplo de useEffect
+  useEffect(() => {
+    console.log('gano ${winner}')
+  }, [winner])
+  //ganador por consola
  
 
   const updateBoard = (index) => {
